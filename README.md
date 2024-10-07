@@ -1,0 +1,1 @@
+This project shows the journey to build a hand pose image classifier. In this project, I used a depth camera made by Intel and mahcine learning library PyTorch to train and build models. The goal is to distribute this project to website that can use users' cameras to capture their hands and classify them.
