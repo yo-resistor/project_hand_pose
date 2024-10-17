@@ -42,8 +42,9 @@ config.enable_stream(stream_type=rs.stream.color,
                     format=rs.format.bgr8, framerate=30)
 
 # create a directory to store image if doesn't exist
-output_dir = "data/train/"
-os.makedirs(name=output_dir, exist_ok=True)
+output_dir_train = "data/train/"
+output_dir_test = "data/test/"
+os.makedirs(name=output_dir_train, exist_ok=True)
 
 # define label pair dictionary for saving image files
 label_pair = {0: "fist", 1: "up", 2: "left", 3: "down", 4: "right"}
@@ -115,11 +116,12 @@ try:
             # 0: fist, 1: up, 2: left, 3: down, 4: right
             file_label = int(input("Enter the image label [0-9]: "))
             # define the path for images based on the label
-            file_dir = os.path.join(output_dir, label_pair[file_label])
-            os.makedirs(name=file_dir, exist_ok=True)
+            file_dir_train = os.path.join(output_dir_train, label_pair[file_label])
+            file_dir_test = os.path.join(output_dir_test, label_pair[file_label])
+            os.makedirs(name=file_dir_train, exist_ok=True)
             # check how many images already existed for file names
-            image_counter = len(os.listdir(file_dir)) + 1
-            file_name = os.path.join(file_dir, f"{file_label}_{image_counter:08d}.png")
+            image_counter = len(os.listdir(file_dir_train)) + len(os.listdir(file_dir_test)) + 1
+            file_name = os.path.join(file_dir_train, f"{file_label}_{image_counter:08d}.png")
             # save images in the defined directory
             cv2.imwrite(file_name, color_image)
             print(f"Image saved as: {file_name}")
