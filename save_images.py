@@ -115,6 +115,7 @@ try:
             # ask the label based on the "label_pair" dictionary
             # 0: fist, 1: up, 2: left, 3: down, 4: right
             file_label = int(input("Enter the image label [0-9]: "))
+            # file_label = 3    # activate this line for saving specific label
             # define the path for images based on the label
             file_dir_train = os.path.join(output_dir_train, label_pair[file_label])
             file_dir_test = os.path.join(output_dir_test, label_pair[file_label])
