@@ -42,9 +42,11 @@ config.enable_stream(stream_type=rs.stream.color,
                     format=rs.format.bgr8, framerate=30)
 
 # create a directory to store image if doesn't exist
-output_dir = "saved_images"
+output_dir = "data/train/"
 os.makedirs(name=output_dir, exist_ok=True)
-image_counter = len(os.listdir(output_dir)) + 1     # image counter for file name
+
+# define label pair dictionary for saving image files
+label_pair = {0: "fist", 1: "up", 2: "left", 3: "down", 4: "right"}
 
 # start streaming
 pipeline.start(config=config)
@@ -110,11 +112,13 @@ try:
             
             # save the image in png format
             file_label = int(input("Enter the image label [0-9]: "))
-            os.makedirs(name=output_dir, exist_ok=True)
-            file_name = os.path.join(output_dir, f"{file_label}_{image_counter:08d}.png")
+            file_dir = os.path.join(output_dir, label_pair[file_label])
+            os.makedirs(name=file_dir, exist_ok=True)
+            image_counter = len(os.listdir(file_dir)) + 1
+            file_name = os.path.join(file_dir, f"{file_label}_{image_counter:08d}.png")
             cv2.imwrite(file_name, color_image)
             image_counter += 1
-            print(f"Image saved as: {file_name}.png")
+            print(f"Image saved as: {file_name}")
                     
 except:
     print("The streaming is not available.")
