@@ -111,13 +111,17 @@ try:
             color_image_reshaped = color_image.transpose(1, 0, 2)
             
             # save the image in png format
+            # ask the label based on the "label_pair" dictionary
+            # 0: fist, 1: up, 2: left, 3: down, 4: right
             file_label = int(input("Enter the image label [0-9]: "))
+            # define the path for images based on the label
             file_dir = os.path.join(output_dir, label_pair[file_label])
             os.makedirs(name=file_dir, exist_ok=True)
+            # check how many images already existed for file names
             image_counter = len(os.listdir(file_dir)) + 1
             file_name = os.path.join(file_dir, f"{file_label}_{image_counter:08d}.png")
+            # save images in the defined directory
             cv2.imwrite(file_name, color_image)
-            image_counter += 1
             print(f"Image saved as: {file_name}")
                     
 except:
