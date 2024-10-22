@@ -3,10 +3,14 @@ import pyrealsense2 as rs
 import numpy as np
 import cv2
 import os
+from utils import reset_data_folder
 # details of pyrealsens2 library:
 # https://intelrealsense.github.io/librealsense/python_docs/_generated/pyrealsense2.html
 # detiail of opencv-python library
 # https://docs.opencv.org/4.x/
+
+# reset data folder organization
+reset_data_folder()
 
 # configure depth and color streams
 pipeline = rs.pipeline()
