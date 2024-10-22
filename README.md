@@ -12,3 +12,6 @@ This script is to save images taken by Intel RealSense Depth Camera D435 utilizi
 First, it resets the file environment by running reset_data_folder.
 Then, user can take a screenshot from livestream video whenever the user wants.
 The user can label the taken image, so it can be automatically saved in organized file structure.
+
+datasets.py
+This script is to prepare data sets and data loaders for training.

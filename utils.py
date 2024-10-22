@@ -1,7 +1,8 @@
-import os
-import shutil
 import torch
 import matplotlib.pyplot as plt
+import os
+import shutil
+import random
 
 # function to save the trained model in local environment
 def save_model(epochs, model, optimizer, criterion):
@@ -82,7 +83,7 @@ def reset_data_folder():
             print(f"No files have been moved from {subfolder_test}.")
         
 # function to move files from source to destination
-def move_files(src, dst):
+def move_files(src: str, dst: str):
     # initialize counter for the number of moved files
     count = 0
     
@@ -98,3 +99,35 @@ def move_files(src, dst):
     
     # print out result
     print(f"{count} files have been moved from {src} to {dst}.")
+    
+# function to randomly move files from source to destination by a specific ratio
+def random_file_move(label_name: str, ratio=0.15):
+    """
+    label_name = fist, up, left, down, right
+    train data will be around 70% of data
+    test and validation data will be around 15% of data each
+    """
+    # define full file paths
+    src = f"data/train/{label_name}/"
+    dst_valid = f"data/valid/{label_name}/"
+    dst_test = f"data/test/{label_name}/"
+    
+    # get file list in source folder
+    files_src = os.listdir(src)
+    
+    # define the number of files to move to each validation or test folder
+    n_files_to_move = round(len(files_src) * ratio)
+    if n_files_to_move < 1:
+        print("There are no files to move.")
+        return
+    
+    # select random files in source folder and move
+    # total number of files to move is 2 * number of files to move to each folder
+    files_to_move = random.sample(files_src, 2 * n_files_to_move)
+    
+    # move the selected files to each folder
+    # 1st half to validation folder and 2nd half to test folder
+    for file_name in files_to_move[0:n_files_to_move]:
+        shutil.move(os.path.join(src, file_name), dst_valid)
+    for file_name in files_to_move[n_files_to_move:]:
+        shutil.move(os.path.join(src, file_name), dst_test)
