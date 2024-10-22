@@ -112,22 +112,38 @@ def random_file_move(label_name: str, ratio=0.15):
     dst_valid = f"data/valid/{label_name}/"
     dst_test = f"data/test/{label_name}/"
     
-    # get file list in source folder
+    # get file list in source and desination folders
     files_src = os.listdir(src)
+    files_dst_1 = os.listdir(dst_valid)
+    files_dst_2 = os.listdir(dst_test)
     
     # define the number of files to move to each validation or test folder
-    n_files_to_move = round(len(files_src) * ratio)
+    total_n_files = len(files_src) + len(files_dst_1) + len(files_dst_2)
+    n_files_to_move = round(total_n_files * ratio)
     if n_files_to_move < 1:
         print("There are no files to move.")
         return
     
+    # check whether the validation or test folder has enough data
+    if 2 * n_files_to_move <= len(files_dst_1) + len(files_dst_2):
+        # if the number of dst 1 (validation) and 2(test) files is greater or equal to 2 * n_files_to_move
+        # consider the files are already moved from train to validation and test folders
+        print("No need to move files: There are enough data.")
+        return
+    else:
+        # else redefine the number of files to move for each folder
+        n_files_to_move_1 = n_files_to_move - len(files_dst_1)
+        n_files_to_move_2 = n_files_to_move - len(files_dst_2)
+    
     # select random files in source folder and move
     # total number of files to move is 2 * number of files to move to each folder
-    files_to_move = random.sample(files_src, 2 * n_files_to_move)
+    files_to_move = random.sample(files_src, n_files_to_move_1 + n_files_to_move_2)
     
     # move the selected files to each folder
     # 1st half to validation folder and 2nd half to test folder
-    for file_name in files_to_move[0:n_files_to_move]:
+    for file_name in files_to_move[0:n_files_to_move_1]:
         shutil.move(os.path.join(src, file_name), dst_valid)
-    for file_name in files_to_move[n_files_to_move:]:
+    print(f"{n_files_to_move_1} files have been moved from {src} to {dst_valid}.")
+    for file_name in files_to_move[n_files_to_move_1:]:
         shutil.move(os.path.join(src, file_name), dst_test)
+    print(f"{n_files_to_move_2} files have been moved from {src} to {dst_test}.")
