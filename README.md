@@ -16,3 +16,7 @@ The user can label the taken image, so it can be automatically saved in organize
 
 datasets.py
 This script is to prepare data sets and data loaders for training.
+
+model.py
+This script details the convolutional neural network we will use for training.
+
