@@ -14,7 +14,7 @@ def save_model(epochs, model, optimizer, criterion):
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'loss': criterion,
-                }, 'outputs/model.pht')
+                }, 'results/model.pht')
     
 # function to save the loss and accuracy plots in local environment
 def save_plot(train_acc, valid_acc, train_loss, valid_loss):
@@ -26,8 +26,10 @@ def save_plot(train_acc, valid_acc, train_loss, valid_loss):
     
     # accuracy plot
     plt.figure(figsize=(10, 7))
-    plt.plot(train_acc, color='green', linestyle='-', label='Train accuracy')
-    plt.plot(valid_acc, color='blue', linestyle='-', label='Validation accuracy')
+    x_range = range(1, len(train_acc) + 1)
+    plt.plot(x_range, train_acc, color='green', linestyle='-', label='Train accuracy')
+    plt.plot(x_range, valid_acc, color='blue', linestyle='-', label='Validation accuracy')
+    plt.xticks(x_range)
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend()
@@ -35,8 +37,10 @@ def save_plot(train_acc, valid_acc, train_loss, valid_loss):
     
     # loss plot
     plt.figure(figsize=(10, 7))
-    plt.plot(train_loss, color='green', linestyle='-', label='Train loss')
-    plt.plot(valid_loss, color='blue', linestyle='-', label='Validation loss')
+    x_range = range(1, len(train_loss) + 1)
+    plt.plot(x_range, train_loss, color='green', linestyle='-', label='Train loss')
+    plt.plot(x_range, valid_loss, color='blue', linestyle='-', label='Validation loss')
+    plt.xticks(x_range)
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
