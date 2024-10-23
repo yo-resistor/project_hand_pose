@@ -3,7 +3,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from tqdm import tqdm
+from tqdm import tqdm # type: ignore
 
 from model import CNN
 from datasets import train_loader, valid_loader
@@ -11,7 +11,7 @@ from utils import save_model, save_plot
 
 # construct the argument parser from command line inputs
 parser = argparse.ArgumentParser()
-parser.add_argument('-e', '--epochs', type=int, default=20,
+parser.add_argument('-e', '--epochs', type=int, default=10,
                     help="the number of epochs to train the model for")
 args = vars(parser.parse_args())
 
