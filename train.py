@@ -9,6 +9,8 @@ from model import CNN
 from datasets import train_loader, valid_loader
 from utils import save_model, save_plot
 
+# TODO: confusion matrix
+
 # construct the argument parser from command line inputs
 parser = argparse.ArgumentParser()
 parser.add_argument('-e', '--epochs', type=int, default=10,

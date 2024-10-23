@@ -14,7 +14,7 @@ def save_model(epochs, model, optimizer, criterion):
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'loss': criterion,
-                }, 'results/model.pht')
+                }, 'results/model.pth')
     
 # function to save the loss and accuracy plots in local environment
 def save_plot(train_acc, valid_acc, train_loss, valid_loss):
@@ -151,3 +151,29 @@ def random_file_move(label_name: str, ratio=0.15):
     for file_name in files_to_move[n_files_to_move_1:]:
         shutil.move(os.path.join(src, file_name), dst_test)
     print(f"{n_files_to_move_2} files have been moved from {src} to {dst_test}.")
+    
+# function to pick a random file in a folder
+def pick_random_file(dir):
+    """
+    pick a random file from the specified directory.
+    return the file name if there is a file.
+    otherwise return a message "No files found in the directory".
+    """
+    # store file name in files if it is a file
+    try: 
+        files = [file for file in os.listdir(dir) 
+                if os.path.isfile(os.path.join(dir, file))]
+    # if given not valid directory, raise error and message accordingly
+    except FileNotFoundError:
+        print("Not a valid directory.")
+    # for any other errors
+    except:
+        print("Unknown error.")
+    
+    # if files list is empty, there are no files in the directory
+    if files is None:
+        print("No files found in the directory.")
+        
+    return random.choice(files)
+        
+    
