@@ -3,6 +3,7 @@ import pyrealsense2 as rs
 import numpy as np
 import cv2
 import os
+
 from utils import reset_data_folder
 # details of pyrealsens2 library:
 # https://intelrealsense.github.io/librealsense/python_docs/_generated/pyrealsense2.html
@@ -55,7 +56,7 @@ label_pair = {0: "fist", 1: "up", 2: "left", 3: "down", 4: "right"}
 
 # start streaming
 pipeline.start(config=config)
-instruction = False     # control variable for keyboard input message
+instruction = True     # control variable for keyboard input message
 
 try:
     # infinite loop for streaming
@@ -95,14 +96,14 @@ try:
         cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('RealSense', images)
         # show details about keyboard inputs for user interface
-        if not instruction:
+        if instruction:
             print('Press "q" or "esc" to stop streaming.')
             print('Press "s" or "space" to save the image frame.')
-            instruction = True
+            instruction = False
             
-        # wait for a key press (1 ms delay)
+        # wait for a key press 
         # ref: https://www.asciitable.com/
-        key = cv2.waitKey(1)
+        key = cv2.waitKey(0)
         # check keyboard input    
         if key == ord('q') or key == 27:
             break

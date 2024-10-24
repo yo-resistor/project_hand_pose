@@ -3,3 +3,5 @@ depth_camera
 saved_images
 data
 results/model.pth
+results/correct
+results/wrong
