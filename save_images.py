@@ -34,7 +34,7 @@ if found_rgb:
 else:
     print("Color sensor DOES NOT exist.")
     
-    # configure resolutions
+# configure resolutions
 # maximum resolution for D435 is 1280X720
 width = 640
 height = 360
@@ -103,7 +103,7 @@ try:
             
         # wait for a key press 
         # ref: https://www.asciitable.com/
-        key = cv2.waitKey(0)
+        key = cv2.waitKey(1)
         # check keyboard input    
         if key == ord('q') or key == 27:
             break
@@ -119,8 +119,8 @@ try:
             # save the image in png format
             # ask the label based on the "label_pair" dictionary
             # 0: fist, 1: up, 2: left, 3: down, 4: right
-            file_label = int(input("Enter the image label [0-9]: "))
-            # file_label = 3    # activate this line for saving specific label
+            # file_label = int(input("Enter the image label [0-9]: "))
+            file_label = 2    # activate this line for saving specific label
             # define the path for images based on the label
             file_dir_train = os.path.join(output_dir_train, label_pair[file_label])
             file_dir_test = os.path.join(output_dir_test, label_pair[file_label])

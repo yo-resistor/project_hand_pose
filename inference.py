@@ -27,7 +27,7 @@ if args['label'] == 'random':
 else:
     label = args['label']
 
-dir = 'data/test/'
+dir = 'data/train/'
 dir_label = os.path.join(dir, label)
 file_name = pick_random_file(dir_label)
 file_path = os.path.join(dir_label, file_name)
@@ -77,8 +77,8 @@ while True:
     # make an inference using the model
     with torch.no_grad():
         outputs = model(image.to(device))
-    _, output_label = torch.max(outputs, 1)
-    pred_label = labels[int(output_label)]
+        _, output_label = torch.max(outputs, 1)
+        pred_label = labels[int(output_label)]
     
     # display true label over the image
     cv2.putText(orig_image, 

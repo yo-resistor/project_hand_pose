@@ -6,7 +6,7 @@ import torch.optim as optim
 from tqdm import tqdm
 
 from model import CNN
-from datasets import train_loader, valid_loader
+from datasets_inference import train_loader, valid_loader, test_loader
 from utils import save_model, save_plot
 
 # TODO: confusion matrix
@@ -119,6 +119,8 @@ def validate(model, criterion, valid_loader):
             valid_loss += loss.item()
             _, predictions = torch.max(outputs.data, 1)
             total += labels.size(0)
+            print(labels)
+            print(predictions)
             valid_correct += (predictions == labels).sum().item()
     
     # loss and accuracy per epoch
@@ -158,3 +160,5 @@ save_plot(train_acc= train_acc, valid_acc=valid_acc,
 
 # print that the training is done
 print(f"TRAINING COMPLETE")
+
+#### TEST ####
