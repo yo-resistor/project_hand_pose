@@ -85,7 +85,7 @@ while True:
         f"True: {true_label}",
         (10, 25),
         cv2.FONT_HERSHEY_SIMPLEX, 
-        0.6, (0, 255, 0), 2, cv2.LINE_AA
+        0.6, (50, 255, 50), 2, cv2.LINE_AA
     )
     
     # display predicted label over the image
@@ -93,7 +93,7 @@ while True:
         f"Pred: {pred_label}",
         (10, 55),
         cv2.FONT_HERSHEY_SIMPLEX, 
-        0.6, (0, 0, 255), 2, cv2.LINE_AA
+        0.6, (50, 50, 255), 2, cv2.LINE_AA
     )
     
     # show details about keyboard inputs for user interface
