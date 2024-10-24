@@ -3,7 +3,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from tqdm import tqdm # type: ignore
+from tqdm import tqdm
 
 from model import CNN
 from datasets import train_loader, valid_loader

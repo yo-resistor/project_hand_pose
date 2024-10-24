@@ -5,7 +5,7 @@ import torch
 import cv2
 import torchvision.transforms as transforms
 
-from model import CNN # type: ignore
+from model import CNN
 from utils import pick_random_file
 
 # TODO: navigation function for results
