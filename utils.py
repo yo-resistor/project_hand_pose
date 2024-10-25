@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import os
 import shutil
 import random
+import numpy as np
+import cv2
 
 # function to save the trained model in local environment
 def save_model(epochs, model, optimizer, criterion):
@@ -175,5 +177,26 @@ def pick_random_file(dir):
         print("No files found in the directory.")
         
     return random.choice(files)
-        
+
+# function to convert image from torch tensor for cv2 library        
+def convert_tensor_to_cv2(image_tensor):
+    # convert data from [C, H, W] to [H, W, C]
+    # C: color channel, H: height, W: width
+    # then convert it to numpy
+    image_np = image_tensor.squeeze(0).permute(1, 2, 0).numpy()
     
+    # reverse the normalization of image
+    mean = np.array([0.5, 0.5, 0.5])
+    std = np.array([0.5, 0.5, 0.5])
+    image_np = std * image_np + mean
+    
+    # make sure the values are between 0 and 1
+    image_np = np.clip(image_np, 0, 1)  
+    
+    # convert the values to 8-bit unsigned integer for cv2 library
+    image_np = (image_np * 255).astype(np.uint8)
+    
+    # convert from RGB (pytorch) to BGR (cv2)
+    image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
+    
+    return image_np
