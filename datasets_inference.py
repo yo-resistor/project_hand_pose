@@ -5,7 +5,7 @@ import torchvision.datasets as datasets
 from torch.utils.data import DataLoader
 
 # define batch_size
-BATCH_SIZE = 1
+BATCH_SIZE = 8
 
 # create folder environments for train, validation, and test
 # if a certain folder does not exist, create
@@ -60,7 +60,6 @@ valid_transform = transforms.Compose([
 
 # test transforms
 test_transform = transforms.Compose([
-    transforms.ToPILImage(),
     # ensure image size to be 360 (height) X 640 (width)
     transforms.Resize((360, 640)),
     transforms.ToTensor(),
@@ -112,7 +111,7 @@ valid_loader = DataLoader(
 # test data loader
 test_loader = DataLoader(
     dataset=test_dataset,
-    batch_size=BATCH_SIZE,
+    batch_size=4,
     shuffle=False,
     num_workers=4,
     pin_memory=True

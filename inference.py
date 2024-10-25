@@ -49,8 +49,8 @@ transform = transforms.Compose([
     transforms.Resize((360, 640)),
     transforms.ToTensor(),
     transforms.Normalize(
-        mean=[0.5, 0.5, 0.5],
-        std=[0.5, 0.5, 0.5]
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225]
     )
 ])
 
@@ -62,6 +62,7 @@ while True:
     # read and preprocess the image
     image = cv2.imread(file_path)
     orig_image = image.copy()
+    print(orig_image)
 
     # get the ground truth label
     true_label = file_path.split('/')[-2]
@@ -69,6 +70,7 @@ while True:
     # convert the format to RGB
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = transform(image)
+    print(image)
 
     # add batch dimension
     # ref: https://pytorch.org/docs/main/generated/torch.unsqueeze.html

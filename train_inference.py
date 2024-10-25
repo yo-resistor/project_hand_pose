@@ -5,6 +5,9 @@ import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
 
+import cv2
+import numpy as np
+
 from model import CNN
 from datasets_inference import train_loader, valid_loader, test_loader
 from utils import save_model, save_plot
@@ -161,4 +164,47 @@ save_plot(train_acc= train_acc, valid_acc=valid_acc,
 # print that the training is done
 print(f"TRAINING COMPLETE")
 
+
 #### TEST ####
+def show_test_result(model, test_loader, classes):
+    while True:
+        model.eval()  # Set the model to evaluation mode
+        data_iter = iter(test_loader)
+        print(test_loader)
+        print(data_iter)
+        images, labels = next(data_iter)
+        
+        # Select one image to visualize
+        image = images[0].unsqueeze(0)  # Add batch dimension
+        true_label = labels[0].item()
+
+        # Perform inference
+        with torch.no_grad():
+            output = model(image.to(device))
+            _, predicted = torch.max(output, 1)
+            predicted_label = predicted.item()
+
+        # Convert image tensor to numpy for displaying
+        image_np = image.squeeze().permute(1, 2, 0).numpy()
+        image_np = (image_np * 255).astype(np.uint8)  # Denormalize
+        
+        # Convert image back to BGR for cv2
+        image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
+
+        # Display the image with the true and predicted labels
+        cv2.putText(image_np, f'True: {classes[true_label]}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        cv2.putText(image_np, f'Predicted: {classes[predicted_label]}', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+        cv2.imshow('Test Result', image_np)
+        key = cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        
+        if key == ord('q') or key == 27:
+            break
+        
+
+# Example usage: Show one test result
+test_loader = test_loader
+classes = ['down', 'fist', 'left', 'right', 'up']
+show_test_result(model, test_loader, classes)
+cv2.destroyAllWindows()
