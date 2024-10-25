@@ -153,8 +153,9 @@ save_model(epochs=epochs, model=model,
            optimizer=optimizer, criterion=criterion)
 
 # save the loss and accuracy plots
-save_plot(train_acc= train_acc, valid_acc=valid_acc, 
-          train_loss=train_loss, valid_loss=valid_loss)
+save_plot(train_acc= train_acc, train_loss=train_loss, 
+          valid_acc=valid_acc, valid_loss=valid_loss,
+          test_acc=None, test_loss=None)
 
 # print that the training is done
 print(f"TRAINING COMPLETE")
