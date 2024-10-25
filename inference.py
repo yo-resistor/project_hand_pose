@@ -11,7 +11,7 @@ from utils import pick_random_file
 # TODO: navigation function for results
 
 # list all class labels
-labels = ['fist', 'up', 'left', 'down', 'right']
+labels = os.listdir('data/train')
 num_classes = len(labels)
 
 # construct the argument parser from command line inputs

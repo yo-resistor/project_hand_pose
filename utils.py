@@ -19,7 +19,7 @@ def save_model(epochs, model, optimizer, criterion):
                 }, 'results/model.pth')
     
 # function to save the loss and accuracy plots in local environment
-def save_plot(train_acc, valid_acc, train_loss, valid_loss):
+def save_plot(train_acc, train_loss, valid_acc, valid_loss, test_acc, test_loss):
     """
     ref: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html
     """
@@ -31,6 +31,8 @@ def save_plot(train_acc, valid_acc, train_loss, valid_loss):
     x_range = range(1, len(train_acc) + 1)
     plt.plot(x_range, train_acc, color='green', linestyle='-', label='Train accuracy')
     plt.plot(x_range, valid_acc, color='blue', linestyle='-', label='Validation accuracy')
+    if test_acc:
+        plt.plot(x_range, test_acc, color='red', linestyle='-', label='Test accuracy')
     plt.xticks(x_range)
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
@@ -42,6 +44,8 @@ def save_plot(train_acc, valid_acc, train_loss, valid_loss):
     x_range = range(1, len(train_loss) + 1)
     plt.plot(x_range, train_loss, color='green', linestyle='-', label='Train loss')
     plt.plot(x_range, valid_loss, color='blue', linestyle='-', label='Validation loss')
+    if test_loss:
+        plt.plot(x_range, test_loss, color='red', linestyle='-', label='Test loss')
     plt.xticks(x_range)
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
@@ -183,6 +187,7 @@ def convert_tensor_to_cv2(image_tensor):
     # convert data from [C, H, W] to [H, W, C]
     # C: color channel, H: height, W: width
     # then convert it to numpy
+    image_tensor = image_tensor.cpu()
     image_np = image_tensor.squeeze(0).permute(1, 2, 0).numpy()
     
     # reverse the normalization of image
