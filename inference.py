@@ -4,14 +4,18 @@ import random
 import torch
 import cv2
 import torchvision.transforms as transforms
+from torchvision import datasets
 
 from model import CNN
 from utils import pick_random_file
 
 # TODO: navigation function for results
 
+# first define an ImageFolder dataset 
+train_dataset = datasets.ImageFolder(root='data/train')
+
 # list all class labels
-labels = os.listdir('data/train')
+labels = train_dataset.classes
 num_classes = len(labels)
 
 # construct the argument parser from command line inputs
@@ -20,14 +24,13 @@ parser.add_argument('-l', '--label', type=str, default='random',
                     help="choose class label for inference")
 args = vars(parser.parse_args())
 
-# define directory and file path based on the inputv2.imwrite(f"results/{true_label}.png")
-
+# define directory and file path based on the input
 if args['label'] == 'random':
     label = random.choice(labels)
 else:
     label = args['label']
 
-dir = 'data/train/'
+dir = 'data/test/'
 dir_label = os.path.join(dir, label)
 file_name = pick_random_file(dir_label)
 file_path = os.path.join(dir_label, file_name)
@@ -41,9 +44,11 @@ model = CNN(num_classes).to(device)
 state = torch.load('results/model.pth', map_location=device)
 # ref: https://pytorch.org/docs/stable/generated/torch.load.html
 model.load_state_dict(state['model_state_dict'])
+
+# set the model to evaluation mode for inference
 model.eval()
 
-# define data tranformer for preprocessing
+# define a data tranformer to preprocess test image
 transform = transforms.Compose([
     transforms.ToPILImage(),
     transforms.Resize((360, 640)),
@@ -62,25 +67,25 @@ while True:
     # read and preprocess the image
     image = cv2.imread(file_path)
     orig_image = image.copy()
-    print(orig_image)
 
     # get the ground truth label
     true_label = file_path.split('/')[-2]
 
-    # convert the format to RGB
+    # convert the format from BGR (cv2) to RGB (pytorch)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = transform(image)
-    print(image)
+    
+    # apply the preprocess transformer to the image
+    image_tensor = transform(image)
 
-    # add batch dimension
+    # add batch dimension since the model expects a batch of image data
     # ref: https://pytorch.org/docs/main/generated/torch.unsqueeze.html
-    image = torch.unsqueeze(image, 0)
+    image_tensor = image_tensor.unsqueeze(0).to(device)
 
-    # make an inference using the model
+    # make an inference using the loaded model
     with torch.no_grad():
-        outputs = model(image.to(device))
-        _, output_label = torch.max(outputs, 1)
-        pred_label = labels[int(output_label)]
+        outputs = model(image_tensor)
+        _, predictions = torch.max(outputs, 1)
+        pred_label = labels[predictions.item()]
     
     # display true label over the image
     cv2.putText(orig_image, 
